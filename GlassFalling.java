@@ -47,7 +47,7 @@ public class GlassFalling {
 
   // Optional:
   // Pick whatever parameters you want to, just make sure to return an int.
-  public int glassFallingMemoized(int floors, int sheets) {
+  public int glassFallingMemoized() {
     // Fill in here and change the return
 
     return 0;
