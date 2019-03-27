@@ -5,12 +5,28 @@ public class RodCutting {
 
   // Do not change the parameters!
   public int rodCuttingRecur(int rodLength, int[] lengthPrices) {
-    return 0;
+    if(rodLength == 0){
+      return 0;
+    }
+    int value=-1;
+    for(int i=1; i<=rodLength; i++){
+      value = Math.max(value, lengthPrices[i-1]+rodCuttingRecur(rodLength-i, lengthPrices));
+    }
+    return value;
   }
 
   // Do not change the parameters!
   public int rodCuttingBottomUp(int rodLength, int[] lengthPrices) {
-    return 0;
+    int[] optimalPrices = new int[rodLength+1];
+    optimalPrices[0] = 0;
+    for(int i=1; i<=rodLength; i++){
+      int value = -1;
+      for(int j=1; j<=i; j++){
+        value = Math.max(value, lengthPrices[j-1]+optimalPrices[i-j]);
+      }
+      optimalPrices[i] = value;
+    }
+    return optimalPrices[rodLength];
   }
 
 
