@@ -47,10 +47,43 @@ public class GlassFalling {
 
   // Optional:
   // Pick whatever parameters you want to, just make sure to return an int.
-  public int glassFallingMemoized() {
+  public int glassFallingMemoized(int floors, int sheets, Boolean initial) {
     // Fill in here and change the return
 
-    return 0;
+    // initial call should create the table
+    if(initial == true){
+      glassTable = new int [floors+1][sheets+1];
+
+      for( int i=1; i<= sheets; i++){
+        glassTable[1][i] = 1;
+        glassTable[0][i] = 0;
+      }
+
+      for( int j=1; j<=floors; j++){
+        glassTable[j][1] = j;
+      }
+    }
+
+    if( floors == 1 || floors == 0 ){
+      return floors;
+    }
+    if( sheets == 1 ){
+      return floors;
+    }
+
+    int minimumDrops = floors;
+    int numberOfDrops;
+
+    for( int i=1 ; i <= floors ; i++){
+      // if the table doesn't have a value at [i][j], call recursive function to fill
+      if(glassTable[i-1][sheets-1]<1) glassTable[i-1][sheets-1] = glassFallingMemoized(i-1, sheets-1, false);
+      if(glassTable[floors-i][sheets]<1) glassTable[floors-i][sheets] = glassFallingMemoized(floors-i, sheets, false);
+
+      numberOfDrops = 1 + Math.max( glassTable[i-1][sheets-1], glassTable[floors-i][sheets] );
+
+      if( numberOfDrops < minimumDrops) minimumDrops = numberOfDrops;
+    }
+    return minimumDrops;
   }
 
   // Do not change the parameters!
@@ -101,7 +134,7 @@ public class GlassFalling {
       // in your final turned-in copy, these are the only things printed
       int minTrials1Recur = gf.glassFallingRecur(27, 2);
       int minTrials1Bottom = gf.glassFallingBottomUp(27, 2);
-      int minTrials2Recur = gf.glassFallingRecur(100, 3);
+      int minTrials2Recur = gf.glassFallingMemoized(100, 3, true);
       int minTrials2Bottom = gf.glassFallingBottomUp(100, 3);
       System.out.println(minTrials1Recur + " " + minTrials1Bottom);
       System.out.println(minTrials2Recur + " " + minTrials2Bottom);
